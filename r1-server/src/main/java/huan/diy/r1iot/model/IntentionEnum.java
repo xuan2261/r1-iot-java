@@ -1,10 +1,10 @@
 package huan.diy.r1iot.model;
 
 public enum IntentionEnum {
-    CHAT("chat", "cn.yunzhisheng.chat", "聊天"),
-    SMART_HOME("smart home", "cn.yunzhisheng.setting", "智能家居"),
-    MUSIC("music", "cn.yunzhisheng.music", "播放量音乐"),
-    NEWS("news", "cn.yunzhisheng.news", "播放新闻");
+    CHAT("chat", "cn.yunzhisheng.chat", "Trò chuyện"),
+    SMART_HOME("smart home", "cn.yunzhisheng.setting", "Nhà thông minh"),
+    MUSIC("music", "cn.yunzhisheng.music", "Phát nhạc"),
+    NEWS("news", "cn.yunzhisheng.news", "Phát tin tức");
     private String name;
     private String serviceName;
     private String description;

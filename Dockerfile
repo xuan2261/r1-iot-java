@@ -1,4 +1,4 @@
-# 第一阶段：构建 jar 包
+# Giai đoạn 1: Xây dựng file jar
 FROM eclipse-temurin:17.0.14_7-jdk as builder
 
 ENV MAVEN_VERSION=3.9.9
@@ -17,23 +17,23 @@ RUN apt-get update && \
 WORKDIR /workspace
 COPY . .
 
-# 构建项目，生成 jar
+# Xây dựng dự án, tạo file jar
 RUN mvn clean package -DskipTests
 
-# 第二阶段：运行 jar 包
+# Giai đoạn 2: Chạy file jar
 FROM eclipse-temurin:17.0.14_7-jdk
 
 WORKDIR /app
 
-# 安装基础工具和ffmpeg
+# Cài đặt công cụ cơ bản và ffmpeg
 RUN apt-get update && \
     apt-get install -y wget ffmpeg ca-certificates && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# 根据系统架构下载对应的 yt-dlp 和 cloudflared 二进制
+# Tải xuống các file nhị phân yt-dlp và cloudflared tương ứng với kiến trúc hệ thống
 RUN ARCH=$(uname -m) && \
-    echo "检测到系统架构: $ARCH" && \
+    echo "Phát hiện kiến trúc hệ thống: $ARCH" && \
     if [ "$ARCH" = "x86_64" ]; then \
         # yt-dlp
         YT_URL="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux"; \
@@ -43,21 +43,21 @@ RUN ARCH=$(uname -m) && \
         YT_URL="https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux_aarch64"; \
         CF_URL="https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64.deb"; \
     else \
-        echo "不支持的架构: $ARCH"; exit 1; \
+        echo "Kiến trúc không được hỗ trợ: $ARCH"; exit 1; \
     fi && \
-    # 下载并安装 yt-dlp
-    echo "下载 yt-dlp URL: $YT_URL" && \
+    # Tải xuống và cài đặt yt-dlp
+    echo "Tải xuống yt-dlp URL: $YT_URL" && \
     wget "$YT_URL" -O /usr/local/bin/yt-dlp && \
     chmod a+rx /usr/local/bin/yt-dlp && \
     yt-dlp --version && \
-    # 下载并安装 cloudflared
-    echo "下载 cloudflared URL: $CF_URL" && \
+    # Tải xuống và cài đặt cloudflared
+    echo "Tải xuống cloudflared URL: $CF_URL" && \
     wget "$CF_URL" -O /tmp/cloudflared.deb && \
     dpkg -i /tmp/cloudflared.deb || apt-get install -f -y && \
     rm -f /tmp/cloudflared.deb && \
     cloudflared --version
 
-# 从构建阶段复制 jar 文件
+# Sao chép file jar từ giai đoạn xây dựng
 COPY --from=builder /workspace/r1-server/target/*.jar app.jar
 
 COPY r1-server/src/main/resources/scripts/manage_cloudflared.sh /manage_cloudflared.sh

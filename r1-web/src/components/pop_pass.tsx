@@ -7,18 +7,18 @@ const PasswordModal = ({onClose}: { onClose: () => void }) => {
     const [password, setPassword] = useState('');
     const inputRef = React.useRef<InputRef>(null);
 
-    // 聚焦输入框
+    // Focus vào ô nhập liệu
     useEffect(() => {
         inputRef.current?.focus();
     }, []);
     const apiURL = process.env.REACT_APP_API_URL;
 
-    // 处理提交
+    // Xử lý khi gửi
     const handleSubmit = async () => {
         if (!password) {
             Modal.warning({
-                title: '提示',
-                content: '请输入密码',
+                title: 'Thông báo',
+                content: 'Vui lòng nhập mật khẩu',
             });
             return;
         }
@@ -29,18 +29,18 @@ const PasswordModal = ({onClose}: { onClose: () => void }) => {
             if (response.status === 200) {
                 window.localStorage.setItem("token", response.data);
                 Modal.success({
-                    title: '成功',
-                    content: '密码验证成功',
+                    title: 'Thành công',
+                    content: 'Xác thực mật khẩu thành công',
                 });
-                // 刷新当前页面
+                // Làm mới trang hiện tại
                 window.location.reload();
             }
         } catch (err) {
-            console.error('验证失败:', err);
+            console.error('Xác thực thất bại:', err);
 
             Modal.error({
-                title: '错误',
-                content: '密码验证失败',
+                title: 'Lỗi',
+                content: 'Xác thực mật khẩu thất bại',
             });
         }
 
@@ -48,7 +48,7 @@ const PasswordModal = ({onClose}: { onClose: () => void }) => {
 
     };
 
-    // 处理键盘事件
+    // Xử lý sự kiện bàn phím
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter') {
             handleSubmit();
@@ -68,12 +68,12 @@ const PasswordModal = ({onClose}: { onClose: () => void }) => {
             zIndex: 1000,
             width: '300px'
         }}>
-            <h3 style={{marginBottom: '16px'}}>请输入密码</h3>
+            <h3 style={{marginBottom: '16px'}}>Vui lòng nhập mật khẩu</h3>
             <Input.Password
                 ref={inputRef}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="系统启动时env参数password"
+                placeholder="Tham số password trong biến môi trường khi khởi động hệ thống"
                 style={{width: '100%', marginBottom: '16px'}}
                 onKeyDown={handleKeyDown}
             />
@@ -82,14 +82,14 @@ const PasswordModal = ({onClose}: { onClose: () => void }) => {
                     onClick={onClose}
                     style={{marginRight: '10px'}}
                 >
-                    取消
+                    Hủy
                 </Button>
                 <Button
                     type="primary"
                     onClick={handleSubmit}
-                    loading={false} // 可以设置为true来显示加载状态
+                    loading={false} // Có thể đặt thành true để hiển thị trạng thái đang tải
                 >
-                    提交
+                    Gửi
                 </Button>
             </div>
         </div>

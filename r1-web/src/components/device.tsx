@@ -37,7 +37,7 @@ const DeviceForm: React.FC<DeviceFormProps> = ({handleSaveDevice, initValues, r1
 
         <Form form={formInstance} preserve initialValues={initValues} onFinish={handleSaveDevice} layout="vertical">
             <Form.Item name="id" label="ID thiết bị" rules={[{required: true}]}>
-                <Input disabled className="form-input" placeholder={"劫持后，请喊一遍小讯小讯，重新刷新页面，自动填充"}/>
+                <Input disabled className="form-input" placeholder={"Sau khi kết nối, hãy gọi 'Xiao Xun Xiao Xun', làm mới trang để tự động điền"}/>
             </Form.Item>
             <Form.Item name="name" label="Tên thiết bị" rules={[{required: true}]}>
                 <Input className="form-input"/>

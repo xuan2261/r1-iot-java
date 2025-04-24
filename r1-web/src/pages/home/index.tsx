@@ -14,7 +14,7 @@ const {TabPane} = Tabs;
 const Box: React.FC = () => {
     const [r1AdminData, setR1AdminData] = useState<R1AdminData | null>(null);
     const [r1Resources, setR1Resources] = useState<R1Resources>();
-    const [showPasswordModal, setShowPasswordModal] = useState(false); // 控制弹窗显示
+    const [showPasswordModal, setShowPasswordModal] = useState(false); // Điều khiển hiển thị cửa sổ popup
     const [currentDeviceId, setCurrentDeviceId] = useState("");
     const [initValues, setInitValues] = useState<Device>();
 
@@ -33,7 +33,7 @@ const Box: React.FC = () => {
             setInitValues(activeDevice);
             form.setFieldsValue(activeDevice);
         }
-    }, [devices, activeDeviceId]); // 依赖于devices和activeDeviceId
+    }, [devices, activeDeviceId]); // Phụ thuộc vào devices và activeDeviceId
 
     useEffect(() => {
         const fetchData = async () => {
@@ -61,7 +61,7 @@ const Box: React.FC = () => {
                 }
 
             } catch (err) {
-                const error = err as AxiosError; // 类型断言为 AxiosError
+                const error = err as AxiosError; // Khẳng định kiểu là AxiosError
                 if (error.response && error.response.status === 403) {
                     setShowPasswordModal(true);
                 } else {
@@ -136,7 +136,7 @@ const Box: React.FC = () => {
             message.success("Lưu cấu hình thiết bị thành công!", 2);
 
         } catch (err) {
-            const error = err as AxiosError; // 类型断言为 AxiosError
+            const error = err as AxiosError; // Khẳng định kiểu là AxiosError
             if (error.response && error.response.status === 403) {
                 setShowPasswordModal(true);
             } else {

@@ -28,7 +28,7 @@ public class NetEaseMusicImpl implements IMusicService {
 
     @Override
     public String getAlias() {
-        return "网易云音乐Nodejs API";
+        return "NetEase Music API";
     }
 
     /**
@@ -38,9 +38,9 @@ public class NetEaseMusicImpl implements IMusicService {
      * "musicinfo": [
      * {
      * "id": "123456",
-     * "title": "夜曲",
-     * "artist": "周杰伦",
-     * "album": "十一月的萧邦",
+     * "title": "Nocturne",
+     * "artist": "Jay Chou",
+     * "album": "November's Chopin",
      * "duration": 240,
      * "url": "https://ting8.yymp3.com/new18/murongxx2/5.mp3",
      * "imgUrl": "https://example.com/images/123456.jpg",
@@ -53,7 +53,7 @@ public class NetEaseMusicImpl implements IMusicService {
      * "errorCode": 0,
      * "page": "1",
      * "source": 1,
-     * "dataSourceName": "我的音乐"
+     * "dataSourceName": "Nhạc của tôi"
      * }
      * }
      *

@@ -109,18 +109,18 @@ public class GequBaoMusicImpl implements IMusicService {
             throw new RuntimeException("music not found");
         }
 
-        // 2. 设置请求头（JSON 格式）
+        // 2. Thiết lập header (định dạng JSON)
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        // 3. 构建请求体（JSON 格式）
+        // 3. Xây dựng body request (định dạng JSON)
         String requestBody = String.format("{\"id\":\"%s\"}", playId);
 
-        // 4. 封装请求实体
+        // 4. Đóng gói entity request
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
 
-        // 5. 发送 POST 请求并获取响应
+        // 5. Gửi request POST và nhận phản hồi
         ResponseEntity<JsonNode> musicUrlResp = restTemplate.exchange(
                 "https://www.gequbao.com/api/play-url",
                 HttpMethod.POST,
@@ -145,7 +145,7 @@ public class GequBaoMusicImpl implements IMusicService {
 
     @Override
     public String getAlias() {
-        return "爬虫";
+        return "Crawler";
     }
 
 }

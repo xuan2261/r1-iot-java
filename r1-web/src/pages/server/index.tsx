@@ -6,7 +6,7 @@ import {R1AdminData, R1GlobalConfig} from "../../model/R1AdminData";
 import {AxiosError} from "axios";
 
 const Server: React.FC = () => {
-    const [showPasswordModal, setShowPasswordModal] = useState(false); // 控制弹窗显示
+    const [showPasswordModal, setShowPasswordModal] = useState(false); // Điều khiển hiển thị cửa sổ popup
     const [r1AdminData, setR1AdminData] = useState<R1AdminData | null>(null);
 
     const apiURL = process.env.REACT_APP_API_URL;
@@ -24,7 +24,7 @@ const Server: React.FC = () => {
 
                 form.setFieldsValue(respData.r1GlobalConfig);
             } catch (err) {
-                const error = err as AxiosError; // 类型断言为 AxiosError
+                const error = err as AxiosError; // Khẳng định kiểu là AxiosError
                 if (error.response && error.response.status === 403) {
                     setShowPasswordModal(true);
                 } else {
@@ -40,10 +40,10 @@ const Server: React.FC = () => {
 
         try {
             await axiosInstance.post(`${apiURL}admin/globalConfig`, values)
-            message.success("服务配置已更新！", 2);
+            message.success("Cấu hình máy chủ đã được cập nhật!", 2);
 
         } catch (err) {
-            const error = err as AxiosError; // 类型断言为 AxiosError
+            const error = err as AxiosError; // Khẳng định kiểu là AxiosError
             if (error.response && error.response.status === 403) {
                 setShowPasswordModal(true);
             } else {
@@ -76,34 +76,34 @@ const Server: React.FC = () => {
                                     initialValues={r1AdminData.r1GlobalConfig}
                                 >
                                     <Form.Item
-                                        label="主机IP"
+                                        label="IP máy chủ"
                                         name="hostIp"
-                                        rules={[{message: '请输入主机IP'}]}
+                                        rules={[{message: 'Vui lòng nhập IP máy chủ'}]}
                                     >
-                                        <Input placeholder="例如: 192.168.1.100:8080，确保R1音箱能访问到这个地址"/>
+                                        <Input placeholder="Ví dụ: 192.168.1.100:8080, đảm bảo loa R1 có thể truy cập địa chỉ này"/>
                                     </Form.Item>
 
                                     <Form.Item
-                                        label="yt-dlp端点"
+                                        label="Điểm cuối yt-dlp"
                                         name="ytdlpEndpoint"
-                                        rules={[{message: '请输入yt-dlp端点'}]}
+                                        rules={[{message: 'Vui lòng nhập điểm cuối yt-dlp'}]}
                                     >
-                                        <Input placeholder="例如: http://example.com:5000，arm机器执行ty-dlp较慢"/>
+                                        <Input placeholder="Ví dụ: http://example.com:5000, máy ARM thực thi yt-dlp chậm hơn"/>
                                     </Form.Item>
 
                                     <Form.Item
-                                        label="Cloudflare服务ID"
+                                        label="ID dịch vụ Cloudflare"
                                         name="cfServiceId"
-                                        rules={[{message: '请输入Cloudflare服务ID'}]}
+                                        rules={[{message: 'Vui lòng nhập ID dịch vụ Cloudflare'}]}
                                     >
-                                        <Input placeholder="例如: service-123，提供内网穿透"/>
+                                        <Input placeholder="Ví dụ: service-123, cung cấp kết nối xuyên mạng nội bộ"/>
                                     </Form.Item>
 
                                     <Form.Item>
                                         <div style={{display: 'flex', justifyContent: 'flex-end', gap: '12px'}}>
 
                                             <Button type="primary" htmlType="submit">
-                                                保存配置
+                                                Lưu cấu hình
                                             </Button>
                                         </div>
                                     </Form.Item>

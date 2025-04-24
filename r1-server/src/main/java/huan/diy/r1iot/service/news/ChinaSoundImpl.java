@@ -30,34 +30,34 @@ public class ChinaSoundImpl implements INewsService, IWebAlias {
 
     @Override
     public String getAlias() {
-        return "中国之声";
+        return "Tiếng nói Trung Quốc";
     }
 
     @Override
     public JsonNode fetchNews(String userInput, Device device) {
-        // API地址
+        // Địa chỉ API
         String url = "https://apppc.cnr.cn/cnr45609411d2c5a16/e281277129d478c12c2ed58e84ca906b/f76a0411ae1ff31be9f9e28f0b51348b";
 
-        // 构建请求体
+        // Xây dựng body request
         Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("chanId", "64");  // 中国之声频道ID
-        requestBody.put("pageIndex", 1);  // 第一页
-        requestBody.put("perPage", 40);   // 每页20条
+        requestBody.put("chanId", "64");  // ID kênh Tiếng nói Trung Quốc
+        requestBody.put("pageIndex", 1);  // Trang đầu tiên
+        requestBody.put("perPage", 40);   // 40 mục mỗi trang
         requestBody.put("lastNewsId", "0");
         requestBody.put("docPubTime", "");
 
-        // 设置请求头
+        // Thiết lập header
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        // 创建请求实体
+        // Tạo entity request
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
         JsonNode directNews;
         try {
-            // 发送POST请求
+            // Gửi request POST
             ResponseEntity<String> response = restTemplate.postForEntity(url, requestEntity, String.class);
 
-            // 将响应内容转换为JsonNode
+            // Chuyển đổi nội dung phản hồi thành JsonNode
             directNews = objectMapper.readTree(response.getBody());
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -75,8 +75,8 @@ public class ChinaSoundImpl implements INewsService, IWebAlias {
                 }
                 ObjectNode music = objectMapper.createObjectNode();
                 music.put("id", index++);
-                music.put("title", "新闻");
-                music.put("artist", "中国之声");
+                music.put("title", "Tin tức");
+                music.put("artist", "Tiếng nói Trung Quốc");
                 music.put("url", link);
                 musicInfo.add(music);
             } catch (Exception e) {

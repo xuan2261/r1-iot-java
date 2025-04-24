@@ -81,29 +81,29 @@ public class R1IotUtils {
 
 
     public void cfInstall(String serviceId) {
-        String scriptPath = "/manage_cloudflared.sh"; // 脚本路径
+        String scriptPath = "/manage_cloudflared.sh"; // đường dẫn script
 
         try {
-            // 执行命令
+            // Thực thi lệnh
             ProcessBuilder processBuilder = new ProcessBuilder(scriptPath, serviceId);
-            processBuilder.redirectErrorStream(true); // 合并标准错误和标准输出
+            processBuilder.redirectErrorStream(true); // Kết hợp lỗi chuẩn và đầu ra chuẩn
             Process process = processBuilder.start();
 
 
-            // 读取命令输出
+            // Đọc đầu ra lệnh
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
             while ((line = reader.readLine()) != null) {
                 log.info(line);
             }
 
-            // 读取错误输出
+            // Đọc đầu ra lỗi
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
             while ((line = errorReader.readLine()) != null) {
                 log.error(line);
             }
 
-            // 等待命令执行完成
+            // Đợi lệnh thực thi hoàn tất
             int exitCode = process.waitFor();
             if (exitCode == 0) {
                 log.info("Cloudflared service installed successfully!");
@@ -116,7 +116,7 @@ public class R1IotUtils {
     }
 
     public JsonNode streamRespSample(String link) {
-        String sample = "{\"code\":\"ANSWER\",\"matchType\":\"NOT_UNDERSTAND\",\"originIntent\":{\"nluSlotInfos\":[]},\"confidence\":0.088038474,\"modelIntentClsScore\":{},\"history\":\"cn.yunzhisheng.chat\",\"source\":\"krc\",\"uniCarRet\":{\"result\":{},\"returnCode\":609,\"message\":\"http post reuqest error\"},\"asr_recongize\":\"地球半径。\",\"rc\":0,\"general\":{\"style\":\"translation\",\"audio\":\"" + link + "\",\"mood\":\"中性\",\"text\":\"半径。一根香蕉？\"},\"returnCode\":0,\"audioUrl\":\"http://asrv3.hivoice.cn/trafficRouter/r/0bXs9E\",\"retTag\":\"nlu\",\"service\":\"cn.yunzhisheng.chat\",\"nluProcessTime\":\"648\",\"text\":\"地球半径\",\"responseId\":\"2df6b92677d34cef8ba7b05d68c61896\"}";
+        String sample = "{\"code\":\"ANSWER\",\"matchType\":\"NOT_UNDERSTAND\",\"originIntent\":{\"nluSlotInfos\":[]},\"confidence\":0.088038474,\"modelIntentClsScore\":{},\"history\":\"cn.yunzhisheng.chat\",\"source\":\"krc\",\"uniCarRet\":{\"result\":{},\"returnCode\":609,\"message\":\"http post reuqest error\"},\"asr_recongize\":\"Bán kính trái đất.\",\"rc\":0,\"general\":{\"style\":\"translation\",\"audio\":\"" + link + "\",\"mood\":\"trung tính\",\"text\":\"Bán kính. Một quả chuối?\"},\"returnCode\":0,\"audioUrl\":\"http://asrv3.hivoice.cn/trafficRouter/r/0bXs9E\",\"retTag\":\"nlu\",\"service\":\"cn.yunzhisheng.chat\",\"nluProcessTime\":\"648\",\"text\":\"Bán kính trái đất\",\"responseId\":\"2df6b92677d34cef8ba7b05d68c61896\"}";
         try {
             return objectMapper.readTree(sample);
         } catch (JsonProcessingException e) {
