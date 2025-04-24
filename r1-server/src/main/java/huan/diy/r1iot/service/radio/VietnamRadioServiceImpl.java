@@ -60,7 +60,7 @@ public class VietnamRadioServiceImpl implements IRadioService {
             String content = new BufferedReader(new InputStreamReader(is))
                     .lines()
                     .reduce("", (a, b) -> a + "\n" + b);
-            
+
             vietnamRadios = parseM3UContent(content);
             log.info("Loaded {} Vietnam radio channels", vietnamRadios.size());
         } catch (Exception e) {
@@ -95,7 +95,7 @@ public class VietnamRadioServiceImpl implements IRadioService {
                     break;
                 }
             }
-            
+
             // Nếu vẫn không tìm thấy, sử dụng kênh đầu tiên
             if (mostSimilarChannel == null && !vietnamRadios.isEmpty()) {
                 mostSimilarChannel = vietnamRadios.get(0);
@@ -158,16 +158,16 @@ public class VietnamRadioServiceImpl implements IRadioService {
 
     private List<Channel> parseM3UContent(String content) {
         List<Channel> channels = new ArrayList<>();
-        
+
         Pattern extinf = Pattern.compile("#EXTINF:-1\\s+tvg-id=\"([^\"]*)\"\\s+tvg-name=\"([^\"]*)\"\\s+tvg-logo=\"([^\"]*)\"\\s+group-title=\"([^\"]*)\",(.*)");
-        
+
         String[] lines = content.split("\n");
         String currentTvgId = "";
         String currentTvgName = "";
         String currentTvgLogo = "";
         String currentGroupTitle = "";
         String currentName = "";
-        
+
         for (String line : lines) {
             line = line.trim();
             if (line.startsWith("#EXTINF")) {
@@ -180,10 +180,10 @@ public class VietnamRadioServiceImpl implements IRadioService {
                     currentName = matcher.group(5);
                 }
             } else if (!line.isEmpty() && !line.startsWith("#")) {
-                channels.add(new Channel(currentTvgId, currentTvgName, currentTvgLogo, currentGroupTitle, currentName, line));
+                channels.add(new Channel(currentTvgName, currentGroupTitle, line));
             }
         }
-        
+
         return channels;
     }
 }
