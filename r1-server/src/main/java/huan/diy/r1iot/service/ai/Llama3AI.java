@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.openai.OpenAiChatModel;
 import huan.diy.r1iot.model.Device;
 import huan.diy.r1iot.model.Message;
 import lombok.extern.slf4j.Slf4j;
@@ -29,13 +31,24 @@ public class Llama3AI implements IAIService {
     private ObjectMapper objectMapper;
 
     private static final String API_URL = "https://llama3-api.meta.ai/v1/chat/completions";
+    private static final String MODEL = "meta-llama/Llama-3-8b-chat";
+
+    @Override
+    public ChatLanguageModel buildModel(Device device) {
+        return OpenAiChatModel.builder()
+                .baseUrl(API_URL)
+                .apiKey(device.getAiConfig().getKey())
+                .modelName(MODEL)
+                .temperature(0.7)
+                .maxTokens(800)
+                .build();
+    }
 
     @Override
     public String getAlias() {
         return "Meta Llama 3";
     }
 
-    @Override
     public String chat(String prompt, Device device) {
         try {
             // Chuẩn bị header
@@ -45,21 +58,21 @@ public class Llama3AI implements IAIService {
 
             // Chuẩn bị messages
             List<Message> messages = new ArrayList<>();
-            
+
             // Thêm system prompt nếu có
             if (device.getAiConfig().getSystemPrompt() != null && !device.getAiConfig().getSystemPrompt().isEmpty()) {
                 messages.add(new Message("system", device.getAiConfig().getSystemPrompt()));
             }
-            
+
             // Thêm user message
             messages.add(new Message("user", prompt));
 
             // Tạo request body
             ObjectNode requestBody = objectMapper.createObjectNode();
-            requestBody.put("model", "meta-llama/Llama-3-8b-chat");
+            requestBody.put("model", MODEL);
             requestBody.put("temperature", 0.7);
             requestBody.put("max_tokens", 800);
-            
+
             ArrayNode messagesNode = requestBody.putArray("messages");
             for (Message message : messages) {
                 ObjectNode messageNode = messagesNode.addObject();
@@ -70,7 +83,7 @@ public class Llama3AI implements IAIService {
             // Gửi request
             HttpEntity<String> request = new HttpEntity<>(requestBody.toString(), headers);
             ResponseEntity<JsonNode> response = restTemplate.postForEntity(API_URL, request, JsonNode.class);
-            
+
             // Xử lý response
             JsonNode responseBody = response.getBody();
             if (responseBody != null && responseBody.has("choices") && responseBody.get("choices").size() > 0) {
@@ -79,7 +92,7 @@ public class Llama3AI implements IAIService {
                     return choice.get("message").get("content").asText();
                 }
             }
-            
+
             return "Không nhận được phản hồi từ Llama 3";
         } catch (Exception e) {
             log.error("Lỗi khi gọi API Llama 3: " + e.getMessage(), e);
