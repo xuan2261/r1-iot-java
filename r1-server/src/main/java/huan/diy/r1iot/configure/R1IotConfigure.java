@@ -1,10 +1,12 @@
 package huan.diy.r1iot.configure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import huan.diy.r1iot.model.*;
 import huan.diy.r1iot.model.Channel;
 import huan.diy.r1iot.model.CityLocation;
 import huan.diy.r1iot.model.R1GlobalConfig;
 import huan.diy.r1iot.model.R1Resources;
+import huan.diy.r1iot.model.ServiceAliasName;
 import huan.diy.r1iot.service.IWebAlias;
 import huan.diy.r1iot.service.ai.IAIService;
 import huan.diy.r1iot.service.audio.IAudioService;
@@ -303,6 +305,18 @@ public class R1IotConfigure {
             channels.add(channel);
         }
         return channels;
+    }
+
+    @Bean
+    public List<ServiceAliasName> aiList() {
+        List<ServiceAliasName> list = new ArrayList<>();
+        list.add(new ServiceAliasName("Claude", "Claude AI"));
+        list.add(new ServiceAliasName("GoogleGemini", "Google Gemini"));
+        list.add(new ServiceAliasName("DeepSeek", "DeepSeek AI"));
+        list.add(new ServiceAliasName("GrokAiX", "Grok AI"));
+        // Thêm Llama 3 vào danh sách dịch vụ AI
+        list.add(new ServiceAliasName("Llama3", "Meta Llama 3"));
+        return list;
     }
 
 }

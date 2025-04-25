@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  r1-iot-java:
+    image: ghcr.io/xuan2261/r1-iot-java:latest
+    container_name: r1-iot-java
+    restart: unless-stopped
+    ports:
+      - "8080:8080"  # Cổng web UI và API
+      - "8090:8090"  # Cổng TCP cho loa R1
+    volumes:
+      - r1-data:/root/.r1iot  # Lưu trữ dữ liệu và cấu hình
+    environment:
+      - TZ=Asia/Ho_Chi_Minh  # Múi giờ Việt Nam
+      - password=yourpassword  # Mật khẩu đăng nhập (thay đổi thành mật khẩu của bạn)
+      # Các biến môi trường tùy chọn
+      - JAVA_OPTS=-Xmx512m -Xms256m  # Giới hạn bộ nhớ Java
+    networks:
+      - r1-network
+
+  # Tùy chọn: Thêm yt-dlp server để xử lý video tốt hơn (đặc biệt hữu ích cho ARM)
+  yt-dlp-server:
+    image: ghcr.io/marcopeocchi/yt-dlp-server:latest
+    container_name: yt-dlp-server
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    volumes:
+      - yt-dlp-cache:/cache
+    environment:
+      - TZ=Asia/Ho_Chi_Minh
+    networks:
+      - r1-network
+
+  # Tùy chọn: Thêm Ollama để chạy mô hình AI cục bộ (thay thế cho API bên ngoài)
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   container_name: ollama
+  #   restart: unless-stopped
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ollama-data:/root/.ollama
+  #   environment:
+  #     - TZ=Asia/Ho_Chi_Minh
+  #   networks:
+  #     - r1-network
+  #   deploy:
+  #     resources:
+  #       reservations:
+  #         devices:
+  #           - driver: nvidia
+  #             count: 1
+  #             capabilities: [gpu]
+
+volumes:
+  r1-data:
+    name: r1-iot-java-data
+  yt-dlp-cache:
+    name: yt-dlp-cache
+  # ollama-data:
+  #   name: ollama-data
+
+networks:
+  r1-network:
+    name: r1-network
+    driver: bridge
